@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  FromEmail:
+    Type: String
+    Default: 'your@email.com'
+    Description: (Required) The verified email address from which you want to send an email. If you attempt to send email using a non-verified address or domain, the operation results in an "Email address not verified" error. Minimum 4 characters.
+    MinLength: 4
+    MaxLength: 70
+    ConstraintDescription: 'Required'
+  CorsOrigin:
+    Type: String
+    Default: ''
+    Description: (Optional) Cross-origin resource sharing (CORS) Origin. You can specify a single origin, all "*" or leave empty and no CORS will be applied.
+    MaxLength: 250
+  Conditions:
+    IsCorsDefined: !Not [!Equals [!Ref CorsOrigin, '']]
+Resources:
+  LambdaEmailer:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          FROM_EMAIL: !Ref FromEmail
+          CORS_ORIGIN: !Ref CorsOrigin
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /send
+            Method: POST
+        OptionsApi:
+          Type: Api
+          Properties:
+            Path: /send
+            Method: OPTIONS
+Outputs:
+  ApiUrl:
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/send
+    Description: The URL of the API Gateway you should invoke to send an email
