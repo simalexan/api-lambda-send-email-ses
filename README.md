@@ -5,12 +5,12 @@
 
 This is a serverless component consisting of:
 
-- an Api Gateway with a POST `/send` endpoint, that accepts three parameters `toEmails`, `subject`,`message`.
-- a Lambda that sends an email to one or multiple specified addresses. Also, depending if the `message` is in a Text or HTML format, it will send it in either of those formats. The `toEmails` parameter must be of Array type.
+- an Api Gateway with a POST `/send` endpoint, that requires three parameters: `toEmails`, `subject`,`message`. It also accepts two optional ones: `ccEmails` and `replyToEmails`.
+- a Lambda that sends an email to one or more specified email addresses. Also, depending if the `message` is in a Text or HTML format, it will send it in either of those formats. The `toEmails`,`ccEmails`, and `replyToEmails` parameters must be of Array type.
 
 It's a Nuts & Bolts application component for AWS Serverless Application Repository.
 
-## Deployment Paramters
+## Deployment Parameters
 
 This component has two CloudFormation deployment parameters:
 

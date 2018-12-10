@@ -42,6 +42,10 @@ exports.handler = (event) => {
     Source: FROM_EMAIL
   };
 
+  if (emailData.replyToEmails && Array.isArray(emailData.replyToEmails)) {
+    emailParams.ReplyToAddresses = emailData.replyToEmails;
+  }
+
   return SES.sendEmail(emailParams).promise()
     .then(() => (processResponse(true)))
     .catch(err => {
