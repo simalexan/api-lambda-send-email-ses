@@ -51,7 +51,7 @@ exports.handler = (event) => {
     .catch(err => {
       console.error(err, err.stack);
       const errorResponse = `Error: Execution update, caused a SES error, please look at your logs.`;
-      return processResponse(IS_CORS, errorResponse, 500);
+      return processResponse(true, errorResponse, 500);
     });
 };
 

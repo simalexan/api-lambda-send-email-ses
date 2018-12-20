@@ -25,6 +25,9 @@ Resources:
         Variables:
           FROM_EMAIL: !Ref FromEmail
           CORS_ORIGIN: !Ref CorsOrigin
+      Policies:
+        - SESCrudPolicy:
+            IdentityName: !Ref FromEmail
       Events:
         EmailApi:
           Type: Api
