@@ -1,10 +1,10 @@
 {
   "name": "api-lambda-send-email-ses",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "package": "aws cloudformation package --template-file template.yml --output-template-file output.yml --s3-bucket api-lambda-send-email-ses-bucket",
+    "package": "aws cloudformation package --template-file template.yml --output-template-file output.yml --s3-bucket app-repo-components",
     "deploy": "aws cloudformation deploy --template-file output.yml --stack-name api-lambda-send-email-ses --capabilities CAPABILITY_IAM",
     "qd": "npm run package && npm run deploy",
     "deploy:test": "aws cloudformation deploy --template-file output.yml --stack-name api-lambda-send-email-ses --capabilities CAPABILITY_IAM --parameter-overrides FromEmail=alexander.simovic@gmail.com"
