@@ -4,18 +4,18 @@ const AWS = require('aws-sdk'),
   FROM_EMAIL = process.env.FROM_EMAIL,
   UTF8CHARSET = 'UTF-8';
 
-exports.handler = (event) => {
+exports.handler = async event => {
   if (event.httpMethod === 'OPTIONS') {
-    return Promise.resolve(processResponse(true));
+    return processResponse(true);
   }
 
   if (!event.body) {
-    return Promise.resolve(processResponse(true, 'Please specify email parameters: toEmails, subject, and message ', 400));
+    return processResponse(true, 'Please specify email parameters: toEmails, subject, and message ', 400);
   }
   const emailData = JSON.parse(event.body);
 
   if (!emailData.toEmails || !Array.isArray(emailData.toEmails) || !emailData.subject || !emailData.message) {
-    return Promise.resolve(processResponse(true, 'Please specify email parameters: toEmails, subject and message', 400));
+    return processResponse(true, 'Please specify email parameters: toEmails, subject and message', 400);
   }
 
   const destination = {
@@ -46,13 +46,14 @@ exports.handler = (event) => {
     emailParams.ReplyToAddresses = emailData.replyToEmails;
   }
 
-  return SES.sendEmail(emailParams).promise()
-    .then(() => (processResponse(true)))
-    .catch(err => {
-      console.error(err, err.stack);
-      const errorResponse = `Error: Execution update, caused a SES error, please look at your logs.`;
-      return processResponse(true, errorResponse, 500);
-    });
+  try {
+    await SES.sendEmail(emailParams).promise();
+    return processResponse(true);
+  } catch (err) {
+    console.error(err, err.stack);
+    const errorResponse = `Error: Execution update, caused a SES error, please look at your logs.`;
+    return processResponse(true, errorResponse, 500);
+  }
 };
 
 function isHTML(value) {

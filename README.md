@@ -23,9 +23,9 @@ This component has two CloudFormation deployment parameters:
 - `FromEmail`, a required parameter, represents the email sender. Must be a SES verified email. If you attempt to send email using a non-verified address or domain, the operation results in an "Email address not verified" error.
 - `CorsOrigin`, an optional parameter, where you can restrict access to only specified domains.
 
-## Latest Release - 1.0.0
+## Latest Release - 1.1.0
 
-Initial release.
+ - Upgrade to Node.js 12.x LTS
 
 ## Roadmap - Upcoming changes
 
